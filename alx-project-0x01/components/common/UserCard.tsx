@@ -1,6 +1,6 @@
-import { PostProps, UserProps } from "@/interfaces";
+import { UserProps } from "@/interfaces";
 
-const UserCArd: React.FC<UserProps> = ({ name, id }) => {
+const UserCard: React.FC<UserProps> = ({ name, id }) => {
   return (
     <div className="max-w-xl mx-auto my-6 p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div className="mb-4">
@@ -15,4 +15,4 @@ const UserCArd: React.FC<UserProps> = ({ name, id }) => {
   );
 };
 
-export default UserCArd;
+export default UserCard;
