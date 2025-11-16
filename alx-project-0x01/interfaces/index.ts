@@ -42,7 +42,7 @@ export interface PostModalProps {
 }
 
 export interface UserData {
-  id: number;
+  id: number | null;
   name: string;
   username: string;
   email: string;

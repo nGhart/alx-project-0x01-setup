@@ -2,7 +2,7 @@ import UserCard from "@/components/common/UserCard";
 import UserModal from "@/components/common/UserModal";
 import Header from "@/components/layout/Header";
 import { UserData } from "@/interfaces";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export async function getStaticProps() {
   const response = await fetch("https://jsonplaceholder.typicode.com/users");
@@ -25,8 +25,15 @@ const Users = ({ users }: { users: UserData[] }) => {
   return (
     <div>
       <Header />
+
+      {isModalOpen && (
+        <UserModal
+          onClose={() => setModalOpen(false)}
+          onSubmit={handleAddUser}
+        />
+      )}
       <div className="flex justify-between">
-        <h1 className=" text-2xl font-semibold">User Content</h1>
+        <h1 className="text-2xl font-semibold">User Content</h1>
         <button
           onClick={() => setModalOpen(true)}
           className="bg-blue-700 px-4 py-2 rounded-full text-white"
@@ -34,25 +41,11 @@ const Users = ({ users }: { users: UserData[] }) => {
           Add User
         </button>
       </div>
-      {users.map((post: UserData, index: number) => (
-        <UserCard
-          id={post.id}
-          name={post.name}
-          username={post.username}
-          email={post.email}
-          phone={post.phone}
-          website={post.website}
-          street={post.address.street}
-          suite={post.address.suite}
-          city={post.address.city}
-          zipcode={post.address.zipcode}
-          lat={post.address.geo.lat}
-          lng={post.address.geo.lng}
-          companyName={post.company.name}
-          catchPhrase={post.company.catchPhrase}
-          bs={post.company.bs}
-        />
-      ))}
+      <div className="grid grid-cols-3 gap-2 ">
+        {users.map((user: UserData, index: number) => (
+          <UserCard user={user} key={user.id} />
+        ))}
+      </div>
     </div>
   );
 };

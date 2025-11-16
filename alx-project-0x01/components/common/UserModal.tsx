@@ -8,7 +8,7 @@ interface UserModalProps {
 
 const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
   const [user, setUser] = useState<UserData>({
-    id: 1,
+    id: null,
     name: "",
     username: "",
     email: "",
@@ -35,7 +35,19 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setUser((prevUser: UserData) => ({ ...prevUser, [name]: value }));
+    setUser((prev) => {
+      const keys = name.split(".");
+      let temp: any = { ...prev };
+      let obj = temp;
+
+      for (let i = 0; i < keys.length - 1; i++) {
+        obj[keys[i]] = { ...obj[keys[i]] };
+        obj = obj[keys[i]];
+      }
+
+      obj[keys[keys.length - 1]] = value;
+      return temp;
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -45,31 +57,11 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
   };
 
   return (
-    <div>
-      {" "}
-      <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-        <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800">
-            Add New User
-          </h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label
-                htmlFor="userId"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                User ID
-              </label>
-              <input
-                type="number"
-                id="userId"
-                name="userId"
-                value={user.id}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
+    <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+      <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-[700px]">
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">Add New User</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-2">
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -132,7 +124,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
               <input
                 type="text"
                 id="street"
-                name="street"
+                name="address.street"
                 value={user.address.street}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -149,7 +141,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
               <input
                 type="text"
                 id="suite"
-                name="suite"
+                name="address.suite"
                 value={user.address.suite}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -166,7 +158,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
               <input
                 type="text"
                 id="city"
-                name="city"
+                name="address.city"
                 value={user.address.city}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -183,7 +175,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
               <input
                 type="text"
                 id="zipcode"
-                name="zipcode"
+                name="address.zipcode"
                 value={user.address.zipcode}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -200,7 +192,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
               <input
                 type="text"
                 id="lat"
-                name="lat"
+                name="address.geo.lat"
                 value={user.address.geo.lat}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -217,7 +209,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
               <input
                 type="text"
                 id="lng"
-                name="lng"
+                name="address.geo.lng"
                 value={user.address.geo.lng}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -268,7 +260,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
               <input
                 type="text"
                 id="name"
-                name="name"
+                name="company.name"
                 value={user.company.name}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -285,7 +277,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
               <input
                 type="text"
                 id="catchPhrase"
-                name="catchPhrase"
+                name="company.catchPhrase"
                 value={user.company.catchPhrase}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -302,7 +294,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
               <input
                 type="text"
                 id="bs"
-                name="bs"
+                name="company.bs"
                 value={user.company.bs}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -325,8 +317,8 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onSubmit }) => {
                 Add User
               </button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );
