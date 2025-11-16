@@ -1,5 +1,6 @@
 import PostCard from "@/components/common/PostCard";
 import PostModal from "@/components/common/PostModal";
+import UserModal from "@/components/common/UserModal";
 import Header from "@/components/layout/Header";
 import { PostData, PostProps } from "@/interfaces";
 import { useState } from "react";
@@ -40,6 +41,13 @@ const Posts: React.FC<PostProps[]> = ({ posts }) => {
 
       {isModalOpen && (
         <PostModal
+          onClose={() => setModalOpen(false)}
+          onSubmit={handleAddPost}
+        />
+      )}
+
+      {isModalOpen && (
+        <UserModal
           onClose={() => setModalOpen(false)}
           onSubmit={handleAddPost}
         />

@@ -4,7 +4,18 @@ import Header from "@/components/layout/Header";
 import { PostData, PostProps } from "@/interfaces";
 import { useState } from "react";
 
-const Posts: React.FC<PostProps[]> = ({ posts }) => {
+export async function getStaticProps() {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const posts = await response.json();
+
+  return {
+    props: {
+      posts,
+    },
+  };
+}
+
+const Posts = ({ posts }: { posts: PostProps[] }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [post, setPost] = useState<PostData | null>(null);
 
@@ -47,16 +58,5 @@ const Posts: React.FC<PostProps[]> = ({ posts }) => {
     </div>
   );
 };
-
-export async function getStaticProps() {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-  const posts = await response.json();
-
-  return {
-    props: {
-      posts,
-    },
-  };
-}
 
 export default Posts;
